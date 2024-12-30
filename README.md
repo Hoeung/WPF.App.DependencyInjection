@@ -2,6 +2,7 @@
 
 ## 소개
 이 저장소는 **CommunityToolkit.Mvvm** 패키지를 활용하여 WPF 애플리케이션에서 의존성 주입(DI) 기반의 MVVM 패턴을 구성한 예제를 제공합니다.
+추가로 MaterialDesign의 사용예제도 포함되어 있습니다.
 
 ## 구조 참고
 본 구조는 Microsoft MVP인 **이재웅님**의 설계를 참고하여 구성되었습니다.
