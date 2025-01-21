@@ -9,6 +9,6 @@
         Style="{DynamicResource MaterialDesignWindow}"
         ThemeMode="Dark">
     <Grid>
-
+        <ContentControl Content="{Binding MainView}"/>
     </Grid>
 </Window>
