@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows.Controls;
 
 namespace WPF.Core;
 
@@ -21,6 +22,19 @@ public abstract class AppBootstrapper
     /// 애플리케이션 시작 시 호출되는 메서드입니다.
     /// </summary>
     protected abstract void OnStartup();
+
+    protected static void AddTransientView<TView, TViewModel>(IServiceCollection services)
+        where TView : UserControl, new()
+        where TViewModel : class
+    {
+        services.AddTransient(provider =>
+        {
+            return new TView
+            {
+                DataContext = provider.GetRequiredService<TViewModel>()
+            };
+        });
+    }
 
     /// <summary>
     /// 애플리케이션을 실행합니다.

@@ -17,6 +17,10 @@ namespace WPF.App.DependencyInjection;
 
 public class DependencyInjectionBootstrapper : AppBootstrapper
 {
+    /// <summary>
+    /// 뷰모델을 서비스 컬렉션에 등록합니다.
+    /// </summary>
+    /// <param name="services"></param>
     protected override void RegisterViewModels(IServiceCollection services)
     {
         services.AddSingleton<HistoryViewModel>();
@@ -27,55 +31,18 @@ public class DependencyInjectionBootstrapper : AppBootstrapper
         services.AddSingleton<MainViewModel>();
     }
 
+    /// <summary>
+    /// 뷰를 서비스 컬렉션에 등록합니다.
+    /// </summary>
+    /// <param name="services"></param>
     protected override void RegisterViews(IServiceCollection services)
     {
-        services.AddTransient(provider =>
-        {
-            return new HistoryView
-            {
-                DataContext = provider.GetRequiredService<HistoryViewModel>()
-            };
-        });
-
-        services.AddTransient(provider =>
-        {
-            return new DatabaseView
-            {
-                DataContext = provider.GetRequiredService<DatabaseViewModel>()
-            };
-        });
-
-        services.AddTransient(provider =>
-        {
-            return new DataCheckView
-            {
-                DataContext = provider.GetRequiredService<DataCheckViewModel>()
-            };
-        });
-
-        services.AddTransient(provider =>
-        {
-            return new HomeView
-            {
-                DataContext = provider.GetRequiredService<HomeViewModel>()
-            };
-        });
-
-        services.AddTransient(provider =>
-        {
-            return new NavigationRailView
-            {
-                DataContext = provider.GetRequiredService<NavigationRailViewModel>()
-            };
-        });
-
-        services.AddTransient(provider =>
-        {
-            return new MainView
-            {
-                DataContext = provider.GetRequiredService<MainViewModel>()
-            };
-        });
+        AddTransientView<HistoryView, HistoryViewModel>(services);
+        AddTransientView<DatabaseView, DatabaseViewModel>(services);
+        AddTransientView<DataCheckView, DataCheckViewModel>(services);
+        AddTransientView<HomeView, HomeViewModel>(services);
+        AddTransientView<NavigationRailView, NavigationRailViewModel>(services);
+        AddTransientView<MainView, MainViewModel>(services);
     }
 
     protected override void OnStartup()
