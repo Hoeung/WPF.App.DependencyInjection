@@ -13,9 +13,15 @@ namespace DependencyInjection.Navigate.Local.ViewModels;
 
 public partial class NavigationRailViewModel : ViewModelBase
 {
+    /// <summary>
+    /// 네비게이션 항목의 리스트입니다.
+    /// </summary>
     [ObservableProperty]
     private ObservableCollection<NavigationItem> _itemList;
 
+    /// <summary>
+    /// 선택된 네비게이션 항목입니다.
+    /// </summary>
     [ObservableProperty]
     private object? _selectedItem;
 
@@ -26,28 +32,28 @@ public partial class NavigationRailViewModel : ViewModelBase
     {
         ItemList =
         [
-            new()
+            new NavigationItem
             {
                 Title = "Home",
                 SelectedIcon = PackIconKind.Home,
                 UnselectedIcon = PackIconKind.HomeOutline,
                 ViewType = ViewType.Home
             },
-            new()
+            new NavigationItem
             {
                 Title = "Data Check",
                 SelectedIcon = PackIconKind.CheckboxMarkedCircle,
                 UnselectedIcon = PackIconKind.CheckboxMarkedCircleOutline,
                 ViewType = ViewType.DataCheck
             },
-            new()
+            new NavigationItem
             {
                 Title = "Database",
                 SelectedIcon = PackIconKind.DatabaseSync,
                 UnselectedIcon = PackIconKind.DatabaseSyncOutline,
                 ViewType = ViewType.Database
             },
-            new()
+            new NavigationItem
             {
                 Title = "History",
                 SelectedIcon = PackIconKind.ClipboardTextClock,
@@ -68,21 +74,14 @@ public partial class NavigationRailViewModel : ViewModelBase
     {
         if (value is NavigationItem item)
         {
-            switch (item.ViewType)
+            SelectedItem = item.ViewType switch
             {
-                case ViewType.Home:
-                    SelectedItem = Ioc.Default.GetRequiredService<HomeView>();
-                    break;
-                case ViewType.DataCheck:
-                    SelectedItem = Ioc.Default.GetRequiredService<DataCheckView>();
-                    break;
-                case ViewType.Database:
-                    SelectedItem = Ioc.Default.GetRequiredService<DatabaseView>();
-                    break;
-                case ViewType.History:
-                    SelectedItem = Ioc.Default.GetRequiredService<HistoryView>();
-                    break;
-            }
+                ViewType.Home => Ioc.Default.GetRequiredService<HomeView>(),
+                ViewType.DataCheck => Ioc.Default.GetRequiredService<DataCheckView>(),
+                ViewType.Database => Ioc.Default.GetRequiredService<DatabaseView>(),
+                ViewType.History => Ioc.Default.GetRequiredService<HistoryView>(),
+                _ => SelectedItem
+            };
         }
     }
 }

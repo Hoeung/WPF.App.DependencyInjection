@@ -4,6 +4,9 @@ using System.Windows.Controls;
 
 namespace WPF.Core;
 
+/// <summary>
+/// WPF 애플리케이션의 부트스트래핑을 담당하는 추상 클래스입니다.
+/// </summary>
 public abstract class AppBootstrapper
 {
     /// <summary>
@@ -23,6 +26,12 @@ public abstract class AppBootstrapper
     /// </summary>
     protected abstract void OnStartup();
 
+    /// <summary>
+    /// 뷰와 뷰모델의 종속성을 설정하고 서비스 컬렉션에 일시적으로 추가합니다.
+    /// </summary>
+    /// <typeparam name="TView">추가할 뷰의 타입</typeparam>
+    /// <typeparam name="TViewModel">추가할 뷰모델의 타입</typeparam>
+    /// <param name="services">서비스 컬렉션</param>
     protected static void AddTransientView<TView, TViewModel>(IServiceCollection services)
         where TView : UserControl, new()
         where TViewModel : class

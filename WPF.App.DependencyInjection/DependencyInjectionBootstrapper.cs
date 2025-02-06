@@ -15,12 +15,15 @@ using WPF.Core;
 
 namespace WPF.App.DependencyInjection;
 
+/// <summary>
+/// Dependency Injection을 사용하여 WPF 애플리케이션의 뷰와 뷰모델을 등록하는 부트스트래퍼 클래스입니다.
+/// </summary>
 public class DependencyInjectionBootstrapper : AppBootstrapper
 {
     /// <summary>
     /// 뷰모델을 서비스 컬렉션에 등록합니다.
     /// </summary>
-    /// <param name="services"></param>
+    /// <param name="services">서비스 컬렉션</param>
     protected override void RegisterViewModels(IServiceCollection services)
     {
         services.AddSingleton<HistoryViewModel>();
@@ -34,7 +37,7 @@ public class DependencyInjectionBootstrapper : AppBootstrapper
     /// <summary>
     /// 뷰를 서비스 컬렉션에 등록합니다.
     /// </summary>
-    /// <param name="services"></param>
+    /// <param name="services">서비스 컬렉션</param>
     protected override void RegisterViews(IServiceCollection services)
     {
         AddTransientView<HistoryView, HistoryViewModel>(services);
@@ -45,6 +48,9 @@ public class DependencyInjectionBootstrapper : AppBootstrapper
         AddTransientView<MainView, MainViewModel>(services);
     }
 
+    /// <summary>
+    /// 애플리케이션 시작 시 호출되는 메서드입니다.
+    /// </summary>
     protected override void OnStartup()
     {
     }
