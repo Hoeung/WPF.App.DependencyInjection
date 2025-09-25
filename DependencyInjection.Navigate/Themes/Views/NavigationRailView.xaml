@@ -46,6 +46,6 @@
 
         <ContentControl
             Grid.Column="1"
-            Content="{Binding SelectedItem}"/>
+            Content="{Binding CurrentView}"/>
     </Grid>
 </UserControl>

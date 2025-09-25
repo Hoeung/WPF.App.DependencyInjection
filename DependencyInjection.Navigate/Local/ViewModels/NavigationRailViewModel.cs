@@ -1,18 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
-using DependencyInjection.Database.Themes.Views;
-using DependencyInjection.DataCheck.Themes.Views;
-using DependencyInjection.History.Themes.Views;
-using DependencyInjection.Home.Themes.Views;
+using DependencyInjection.Navigate.Local.Enums;
+using DependencyInjection.Navigate.Local.Interfaces;
 using DependencyInjection.Navigate.Local.Models;
 using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
+using System.Windows;
 using WPF.Core;
 
 namespace DependencyInjection.Navigate.Local.ViewModels;
 
 public partial class NavigationRailViewModel : ViewModelBase
 {
+    private readonly INavigationViewFactory? _viewFactory;
+
     /// <summary>
     /// 네비게이션 항목의 리스트입니다.
     /// </summary>
@@ -23,13 +23,21 @@ public partial class NavigationRailViewModel : ViewModelBase
     /// 선택된 네비게이션 항목입니다.
     /// </summary>
     [ObservableProperty]
-    private object? _selectedItem;
+    private NavigationItem? _selectedItem;
+
+    /// <summary>
+    /// 현재 활성화된 뷰입니다.
+    /// </summary>
+    [ObservableProperty]
+    private FrameworkElement? _currentView;
 
     /// <summary>
     /// NavigationRailViewModel의 생성자입니다.
     /// </summary>
-    public NavigationRailViewModel()
+    public NavigationRailViewModel(INavigationViewFactory? viewFactory = null)
     {
+        _viewFactory = viewFactory;
+
         ItemList =
         [
             new NavigationItem
@@ -37,51 +45,54 @@ public partial class NavigationRailViewModel : ViewModelBase
                 Title = "Home",
                 SelectedIcon = PackIconKind.Home,
                 UnselectedIcon = PackIconKind.HomeOutline,
-                ViewType = ViewType.Home
+                ViewType = NavigationViewType.Home
             },
             new NavigationItem
             {
                 Title = "Data Check",
                 SelectedIcon = PackIconKind.CheckboxMarkedCircle,
                 UnselectedIcon = PackIconKind.CheckboxMarkedCircleOutline,
-                ViewType = ViewType.DataCheck
+                ViewType = NavigationViewType.DataCheck
             },
             new NavigationItem
             {
                 Title = "Database",
                 SelectedIcon = PackIconKind.DatabaseSync,
                 UnselectedIcon = PackIconKind.DatabaseSyncOutline,
-                ViewType = ViewType.Database
+                ViewType = NavigationViewType.Database
             },
             new NavigationItem
             {
                 Title = "History",
                 SelectedIcon = PackIconKind.ClipboardTextClock,
                 UnselectedIcon = PackIconKind.ClipboardTextClockOutline,
-                ViewType = ViewType.History
+                ViewType = NavigationViewType.History
             }
         ];
 
         // 초기 선택 항목 설정
         SelectedItem = ItemList[0];
+        SetCurrentView(SelectedItem);
     }
 
     /// <summary>
     /// 선택된 항목이 변경될 때 호출되는 메서드입니다.
     /// </summary>
     /// <param name="value">새로 선택된 항목</param>
-    partial void OnSelectedItemChanged(object? value)
+    partial void OnSelectedItemChanged(NavigationItem? value)
     {
-        if (value is NavigationItem item)
+        if (value != null)
         {
-            SelectedItem = item.ViewType switch
-            {
-                ViewType.Home => Ioc.Default.GetRequiredService<HomeView>(),
-                ViewType.DataCheck => Ioc.Default.GetRequiredService<DataCheckView>(),
-                ViewType.Database => Ioc.Default.GetRequiredService<DatabaseView>(),
-                ViewType.History => Ioc.Default.GetRequiredService<HistoryView>(),
-                _ => SelectedItem
-            };
+            SetCurrentView(value);
         }
+    }
+
+    /// <summary>
+    /// 현재 뷰를 설정합니다.
+    /// </summary>
+    /// <param name="item">네비게이션 항목</param>
+    private void SetCurrentView(NavigationItem item)
+    {
+        CurrentView = _viewFactory?.CreateView(item.ViewType);
     }
 }

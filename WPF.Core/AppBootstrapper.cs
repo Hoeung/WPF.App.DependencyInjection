@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Controls;
+using WPF.Core.Interfaces;
 
 namespace WPF.Core;
 
@@ -43,6 +44,22 @@ public abstract class AppBootstrapper
                 DataContext = provider.GetRequiredService<TViewModel>()
             };
         });
+    }
+
+    /// <summary>
+    /// 제네릭 뷰 팩토리를 등록합니다.
+    /// </summary>
+    /// <typeparam name="TViewType">뷰 타입 열거형</typeparam>
+    /// <typeparam name="TFactory">팩토리 인터페이스 타입</typeparam>
+    /// <param name="services">서비스 컬렉션</param>
+    /// <param name="factoryImplementation">팩토리 구현체</param>
+    protected static void AddViewFactory<TViewType, TFactory>(
+        IServiceCollection services,
+        Func<IServiceProvider, TFactory> factoryImplementation)
+        where TViewType : Enum
+        where TFactory : class, IViewFactory<TViewType>
+    {
+        services.AddTransient(factoryImplementation);
     }
 
     /// <summary>

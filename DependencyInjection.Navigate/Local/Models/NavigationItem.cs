@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using DependencyInjection.Navigate.Local.Enums;
+using MaterialDesignThemes.Wpf;
 
 namespace DependencyInjection.Navigate.Local.Models;
 
@@ -10,5 +11,5 @@ public class NavigationItem
     public string? Title { get; set; }
     public PackIconKind SelectedIcon { get; set; }
     public PackIconKind UnselectedIcon { get; set; }
-    public ViewType ViewType { get; set; }
+    public NavigationViewType ViewType { get; set; }
 }
