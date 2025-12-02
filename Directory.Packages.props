@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <!-- UI Framework -->
+    <PackageVersion Include="MaterialDesignThemes" Version="5.2.1" />
+    
+    <!-- MVVM Toolkit -->
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    
+    <!-- Dependency Injection -->
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.1" />
+  </ItemGroup>
+</Project>
